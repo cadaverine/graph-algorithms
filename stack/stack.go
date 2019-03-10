@@ -22,7 +22,7 @@ func (stack *Stack) Pop() (interface{}, error) {
 		return last, nil
 	}
 
-	return 0, errors.New("stack is empty")
+	return nil, errors.New("stack is empty")
 }
 
 // IsEmpty - проверка стека на наличие элементов

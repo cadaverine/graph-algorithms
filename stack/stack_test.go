@@ -40,7 +40,7 @@ func TestPop(t *testing.T) {
 	}
 
 	result, error = stack.Pop()
-	if result != 0 || error == nil {
+	if result != nil || error == nil {
 		t.Errorf("Test failed.\nResult: %v\nType: %v\nError: %v", result, reflect.TypeOf(result), error)
 	}
 }
