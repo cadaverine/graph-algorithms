@@ -31,21 +31,20 @@ func (list *List) AddNode(node *Node) {
 	list.Length++
 }
 
-// String - метод для вывода списка
-func (list *List) String() string {
-	s := ""
+// String - метод для вывода списка (Stringer interface)
+func (list List) String() string {
+	str := ""
 	node := list.Head
-	for {
-		s += fmt.Sprintf("%s", node.Data)
+	for node != nil {
+		str += fmt.Sprint(node.Data)
 
-		node = node.next
-
-		if node != nil {
-			s += ", "
+		if node.next != nil {
+			str += ", "
+			node = node.next
 		} else {
 			break
 		}
 	}
 
-	return s
+	return str
 }
