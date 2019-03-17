@@ -1,15 +1,29 @@
 package graph
 
-import . "../list"
+import (
+	"fmt"
 
+	. "../list"
+)
+
+// Vertex - вершина графа
 type Vertex struct {
 	data interface{}
 }
 
+func (vertex *Vertex) String() string {
+	return fmt.Sprint(vertex.data)
+}
+
+// Edge - ребро графа
 type Edge struct {
 	weight int
 	from   *Vertex
 	to     *Vertex
+}
+
+func (edge *Edge) String() string {
+	return fmt.Sprint(edge.from) + " -> " + fmt.Sprint(edge.to)
 }
 
 // Graph - реализация графа в виде списка смежности
@@ -38,4 +52,29 @@ func (graph *Graph) AddEdge(from, to *Vertex, weight int) {
 		graph.adjacencyMap[from] = &List{}
 		graph.adjacencyMap[from].AddData(&edge)
 	}
+}
+
+// AddEdgeData - создать ребро из данных и добавить в граф
+func (graph *Graph) AddEdgeData(fromData, toData interface{}, weight int) {
+	for from := range graph.adjacencyMap {
+		if from.data == fromData {
+			to := Vertex{toData}
+
+			graph.AddEdge(from, &to, weight)
+			return
+		}
+	}
+
+	to := Vertex{toData}
+	from := Vertex{fromData}
+
+	graph.AddEdge(&from, &to, weight)
+}
+
+func (graph Graph) String() (out string) {
+	for key, value := range graph.adjacencyMap {
+		out += fmt.Sprint(key) + ": " + fmt.Sprint(value) + "\n"
+	}
+
+	return out
 }
