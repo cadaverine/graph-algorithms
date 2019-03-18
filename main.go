@@ -21,6 +21,10 @@ func main() {
 	gr.AddEdgeData(1, 4, 2)
 	gr.AddEdgeData(5, 7, 1)
 	gr.AddEdgeData(3, 1, 3)
+	gr.AddEdgeData(1, 2, 1)
+	gr.AddEdgeData(2, 7, 4)
+	gr.AddEdgeData(7, 4, 3)
+	gr.AddEdgeData(7, 6, 1)
 
 	fmt.Println(gr)
 }
