@@ -32,7 +32,7 @@ func (list *List) AddNode(node *Node) {
 }
 
 // String - метод для вывода списка (Stringer interface)
-func (list List) String() (out string) {
+func (list *List) String() (out string) {
 	node := list.Head
 	for node != nil {
 		out += fmt.Sprint(node.Data)

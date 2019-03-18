@@ -51,7 +51,7 @@ func (graph *Graph) AddEdgeData(fromData, toData interface{}, weight int) {
 	graph.AddEdge(&from, &to, weight)
 }
 
-func (graph Graph) String() (out string) {
+func (graph *Graph) String() (out string) {
 	for key, value := range graph.adjacencyMap {
 		out += fmt.Sprint(key) + ": " + fmt.Sprint(value) + "\n"
 	}
