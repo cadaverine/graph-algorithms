@@ -10,5 +10,5 @@ type Edge struct {
 }
 
 func (edge *Edge) String() string {
-	return fmt.Sprint(edge.from) + " -> " + fmt.Sprint(edge.to)
+	return fmt.Sprint(edge.from) + " -(" + fmt.Sprint(edge.weight) + ")-> " + fmt.Sprint(edge.to)
 }
