@@ -4,7 +4,7 @@ import "fmt"
 
 type Node struct {
 	Data interface{}
-	next *Node
+	Next *Node
 }
 
 // List - реализация односвязного списка
@@ -25,7 +25,7 @@ func (list *List) AddNode(node *Node) {
 		list.Tail = node
 		list.Head = list.Tail
 	} else {
-		list.Tail.next = node
+		list.Tail.Next = node
 		list.Tail = node
 	}
 	list.Length++
@@ -37,9 +37,9 @@ func (list *List) String() (out string) {
 	for node != nil {
 		out += fmt.Sprint(node.Data)
 
-		if node.next != nil {
+		if node.Next != nil {
 			out += ", "
-			node = node.next
+			node = node.Next
 		} else {
 			break
 		}
