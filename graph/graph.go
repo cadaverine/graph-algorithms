@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"../list"
+	"../queue"
 )
 
 // Graph - реализация графа в виде списка смежности
@@ -57,4 +58,40 @@ func (graph *Graph) String() (out string) {
 	}
 
 	return out
+}
+
+// DFS (depth-first search) - поиск в глубину
+// func (graph *Graph) DFS(data interface{}, from *Vertex) *Vertex {
+// 	list := graph.adjacencyMap[from]
+// 	stack := stack.Stack{}
+// }
+
+// BFS (breadth-first search) - поиск в ширину
+func (graph *Graph) BFS(data interface{}, from *Vertex) *Vertex {
+	edges := graph.adjacencyMap[from]
+	visited := make(map[*Vertex]bool)
+
+	toVisit := queue.Queue{}
+	toVisit.Enqueue(from)
+
+	for toVisit.Size() != 0 {
+		value, _ := toVisit.Dequeue()
+		currentVertex := value.(Vertex)
+
+		visited[&currentVertex] = true
+
+		fmt.Println(currentVertex)
+
+		if currentVertex.data == data {
+			return &currentVertex
+		}
+
+		currentEdge := edges.Head
+		for currentEdge != nil {
+			toVisit.Enqueue(currentEdge.Data.(Edge).to)
+			currentEdge = currentEdge.Next
+		}
+	}
+
+	return nil
 }
