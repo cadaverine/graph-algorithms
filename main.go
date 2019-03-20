@@ -17,14 +17,16 @@ func main() {
 	gr.AddVertex(6)
 	gr.AddVertex(7)
 
-	gr.AddEdgeData(1, 3, 5)
-	gr.AddEdgeData(1, 4, 2)
-	gr.AddEdgeData(5, 7, 1)
-	gr.AddEdgeData(3, 1, 3)
-	gr.AddEdgeData(1, 2, 1)
-	gr.AddEdgeData(2, 7, 4)
-	gr.AddEdgeData(7, 4, 3)
-	gr.AddEdgeData(7, 6, 1)
+	gr.AddEdgeByIDs(0, 2, 5)
+	gr.AddEdgeByIDs(0, 3, 2)
+	gr.AddEdgeByIDs(4, 6, 1)
+	gr.AddEdgeByIDs(2, 0, 3)
+	gr.AddEdgeByIDs(0, 1, 1)
+	gr.AddEdgeByIDs(1, 6, 4)
+	gr.AddEdgeByIDs(6, 3, 3)
+	gr.AddEdgeByIDs(6, 5, 1)
 
 	fmt.Println(gr)
+
+	// gr.BFS(4)
 }
