@@ -77,7 +77,6 @@ func (graph *Graph) String() (out string) {
 
 // BFS (breadth-first search) - поиск в ширину
 func (graph *Graph) BFS(data interface{}, from *Vertex) *Vertex {
-	edges := graph.adjacencyMap[from]
 	visited := make(map[*Vertex]bool)
 
 	toVisit := queue.Queue{}
@@ -85,19 +84,23 @@ func (graph *Graph) BFS(data interface{}, from *Vertex) *Vertex {
 
 	for toVisit.Size() != 0 {
 		value, _ := toVisit.Dequeue()
-		currentVertex := value.(Vertex)
+		currentVertex := value.(*Vertex)
 
-		visited[&currentVertex] = true
-
-		fmt.Println(currentVertex)
-
-		if currentVertex.data == data {
-			return &currentVertex
+		if visited[currentVertex] {
+			continue
 		}
 
+		visited[currentVertex] = true
+
+		if currentVertex.data == data {
+			return currentVertex
+		}
+
+		edges := graph.adjacencyMap[currentVertex]
 		currentEdge := edges.Head
+
 		for currentEdge != nil {
-			toVisit.Enqueue(currentEdge.Data.(Edge).to)
+			toVisit.Enqueue(currentEdge.Data.(*Edge).to)
 			currentEdge = currentEdge.Next
 		}
 	}
