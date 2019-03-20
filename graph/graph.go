@@ -5,6 +5,7 @@ import (
 
 	"../list"
 	"../queue"
+	"../stack"
 )
 
 // Graph - реализация графа в виде списка смежности
@@ -75,7 +76,7 @@ func (graph *Graph) String() (out string) {
 	return out
 }
 
-// BFS (breadth-first search) - поиск в ширину
+// BFS (breadth-first search) - поиск в ширину с использованием очереди
 func (graph *Graph) BFS(data interface{}, from *Vertex) *Vertex {
 	visited := make(map[*Vertex]bool)
 
@@ -108,8 +109,35 @@ func (graph *Graph) BFS(data interface{}, from *Vertex) *Vertex {
 	return nil
 }
 
-// DFS (depth-first search) - поиск в глубину
-// func (graph *Graph) DFS(data interface{}, from *Vertex) *Vertex {
-// 	list := graph.adjacencyMap[from]
-// 	stack := stack.Stack{}
-// }
+// DFS (depth-first search) - поиск в глубину с использованием стека
+func (graph *Graph) DFS(data interface{}, from *Vertex) *Vertex {
+	visited := make(map[*Vertex]bool)
+
+	toVisit := stack.Stack{}
+	toVisit.Push(from)
+
+	for toVisit.Size() != 0 {
+		value, _ := toVisit.Pop()
+		currentVertex := value.(*Vertex)
+
+		if visited[currentVertex] {
+			continue
+		}
+
+		visited[currentVertex] = true
+
+		if currentVertex.data == data {
+			return currentVertex
+		}
+
+		edges := graph.adjacencyMap[currentVertex]
+		currentEdge := edges.Head
+
+		for currentEdge != nil {
+			toVisit.Push(currentEdge.Data.(*Edge).to)
+			currentEdge = currentEdge.Next
+		}
+	}
+
+	return nil
+}
