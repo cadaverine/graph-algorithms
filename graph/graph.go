@@ -11,24 +11,22 @@ import (
 // Graph - реализация графа в виде списка смежности
 type Graph struct {
 	adjacencyMap map[*Vertex]*list.List
-	verteces     []*Vertex
+	verteces     map[int]*Vertex
 }
 
 // InitializeGraph - создание графа (аналог конструктора)
 func InitializeGraph() *Graph {
 	return &Graph{
 		adjacencyMap: make(map[*Vertex]*list.List, 0),
-		verteces:     make([]*Vertex, 0),
+		verteces:     make(map[int]*Vertex, 0),
 	}
 }
 
 // AddVertex - создать вершину из данных и добавить в граф
-func (graph *Graph) AddVertex(data interface{}) *Vertex {
-	id := len(graph.verteces)
-
+func (graph *Graph) AddVertex(id int, data interface{}) *Vertex {
 	vertex := &Vertex{data, id}
 
-	graph.verteces = append(graph.verteces, vertex)
+	graph.verteces[id] = vertex
 	graph.adjacencyMap[vertex] = &list.List{}
 
 	return vertex
@@ -49,14 +47,6 @@ func (graph *Graph) AddEdge(from, to *Vertex, weight int) {
 		graph.adjacencyMap[from] = &list.List{}
 		graph.adjacencyMap[from].AddData(edge)
 	}
-}
-
-// AddEdgeByData - создать ребро из данных и добавить в граф
-func (graph *Graph) AddEdgeByData(fromData, toData interface{}, weight int) {
-	to := graph.AddVertex(toData)
-	from := graph.AddVertex(fromData)
-
-	graph.AddEdge(from, to, weight)
 }
 
 // AddEdgeByIDs - создать ребро из между существующими вершинами

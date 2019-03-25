@@ -8,6 +8,11 @@ type Vertex struct {
 	id   int
 }
 
+// GetData - получение данных из вершины
+func (vertex *Vertex) GetData() interface{} {
+	return vertex.data
+}
+
 func (vertex *Vertex) String() string {
-	return fmt.Sprint(vertex.data)
+	return fmt.Sprint(vertex.id)
 }
