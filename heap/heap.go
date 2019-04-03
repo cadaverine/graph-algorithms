@@ -58,12 +58,12 @@ func (heap *Heap) pop() *Item {
 	return item
 }
 
-func (heap *Heap) compare(first, second *Item) bool {
+func (heap *Heap) compare(child, parent *Item) bool {
 	if heap.orderType == Maximum {
-		return first.priority > second.priority
+		return child.priority > parent.priority
 	}
 
-	return first.priority < second.priority
+	return child.priority < parent.priority
 }
 
 func (heap *Heap) swap(i, j int) {
@@ -71,9 +71,40 @@ func (heap *Heap) swap(i, j int) {
 }
 
 func (heap *Heap) fixUp(i int) {
+	// добавить проеверки на существование элементов по указанным индексам
+	child := heap.data[i]
+	parent := heap.data[i/2]
 
+	// проверить compare на корректность работы с OrderType
+	if heap.compare(child, parent) {
+		heap.swap(i, i/2)
+		heap.fixUp(i / 2)
+	}
 }
 
-func (heap *Heap) fixDown(i int) {
+func (heap *Heap) getMaxChild(i int) *Item {
+	leftChildIndex := i*2 + 1
+	rightChildIndex := i*2 + 2
 
+	if heap.Size() > leftChildIndex {
+
+	} else if heap.Size() > leftChildIndex {
+		return heap.data[leftChildIndex]
+	} else {
+		return nil
+	}
+}
+
+func (heap *Heap) fixDown() {
+	parent := heap.data[0]
+	child := heap.getMaxChild()
+
+	if child != nil {
+		heap.swap()
+	}
+	// child := math.Max(heap.data[i*2+1].priority, heap.data[i*2+2].priority) использовать compare для сравнения
+
+	if heap.compare(child, parent) {
+
+	}
 }
