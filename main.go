@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"./graph"
+	"./heap"
 )
 
 func main() {
@@ -40,4 +41,21 @@ func main() {
 
 	fmt.Println("BFS result: ", resultBFS)
 	fmt.Println("DFS result: ", resultDFS)
+
+	fmt.Println()
+
+	hp := heap.Init(heap.Maximum)
+
+	hp.Enqueue(0, 5)
+	hp.Enqueue(0, 6)
+	hp.Enqueue(0, 2)
+	hp.Enqueue(0, 3)
+	hp.Enqueue(0, 0)
+
+	fmt.Println(hp)
+	fmt.Println(hp.Dequeue())
+	fmt.Println(hp.Dequeue())
+	fmt.Println(hp.Dequeue())
+	fmt.Println(hp.Dequeue())
+	fmt.Println(hp.Dequeue())
 }
