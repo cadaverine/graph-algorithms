@@ -112,11 +112,9 @@ func (heap *Heap) getActualChild(i int) *Item {
 }
 
 func (heap *Heap) fixUp(i int) {
-	// добавить проеверки на существование элементов по указанным индексам
 	child := heap.data[i]
 	parent := heap.data[i/2]
 
-	// проверить compare на корректность работы с OrderType
 	if heap.compare(child, parent) {
 		heap.swap(i, i/2)
 		heap.fixUp(i / 2)
