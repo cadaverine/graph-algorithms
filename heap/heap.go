@@ -1,10 +1,16 @@
-package graph
+package heap
+
+import "fmt"
 
 // Item - элемент двоичной кучи
 type Item struct {
 	priority int
 	index    int
 	data     interface{}
+}
+
+func (item *Item) String() string {
+	return fmt.Sprint("{p: ", item.priority, ", d: ", item.data, "}")
 }
 
 // OrderType - тип частичного порядка
@@ -17,7 +23,7 @@ const (
 	Maximum
 )
 
-// Heap - структура данных - двоичная куча
+// Heap - структура данных двоичная куча
 type Heap struct {
 	orderType OrderType
 	data      []*Item
@@ -42,15 +48,30 @@ func (heap *Heap) Enqueue(object interface{}, priority int) {
 }
 
 // Dequeue - удалить из очереди
-func (heap *Heap) Dequeue() interface{} {
+func (heap *Heap) Dequeue() (interface{}, int) {
 	heap.swap(0, heap.Size()-1)
 	item := heap.pop()
-	heap.fixDown(0)
 
-	return item.data
+	if heap.Size() != 0 {
+		heap.fixDown(0)
+	}
+
+	return item.data, item.priority
 }
 
-func (heap *Heap) push() {}
+func (heap *Heap) String() string {
+	temp := ""
+
+	for _, item := range heap.data {
+		temp += fmt.Sprintln(item)
+	}
+
+	return temp
+}
+
+// ***************
+// PRIVATE METHODS
+// ***************
 
 func (heap *Heap) pop() *Item {
 	item := heap.data[heap.Size()-1]
@@ -58,16 +79,36 @@ func (heap *Heap) pop() *Item {
 	return item
 }
 
-func (heap *Heap) compare(child, parent *Item) bool {
-	if heap.orderType == Maximum {
-		return child.priority > parent.priority
-	}
-
-	return child.priority < parent.priority
-}
-
 func (heap *Heap) swap(i, j int) {
 	heap.data[i], heap.data[j] = heap.data[j], heap.data[i]
+	heap.data[i].index, heap.data[j].index = heap.data[j].index, heap.data[i].index
+}
+
+func (heap *Heap) compare(first, second *Item) bool {
+	if heap.orderType == Maximum {
+		return first.priority > second.priority
+	}
+
+	return first.priority < second.priority
+}
+
+func (heap *Heap) getActualChild(i int) *Item {
+	leftChildIndex := i*2 + 1
+	rightChildIndex := i*2 + 2
+
+	if heap.Size() > rightChildIndex {
+		leftChild := heap.data[leftChildIndex]
+		rightChild := heap.data[rightChildIndex]
+
+		if heap.compare(leftChild, rightChild) {
+			return leftChild
+		}
+		return rightChild
+	} else if heap.Size() > leftChildIndex {
+		return heap.data[leftChildIndex]
+	} else {
+		return nil
+	}
 }
 
 func (heap *Heap) fixUp(i int) {
@@ -82,29 +123,12 @@ func (heap *Heap) fixUp(i int) {
 	}
 }
 
-func (heap *Heap) getMaxChild(i int) *Item {
-	leftChildIndex := i*2 + 1
-	rightChildIndex := i*2 + 2
+func (heap *Heap) fixDown(index int) {
+	parent := heap.data[index]
+	child := heap.getActualChild(index)
 
-	if heap.Size() > leftChildIndex {
-
-	} else if heap.Size() > leftChildIndex {
-		return heap.data[leftChildIndex]
-	} else {
-		return nil
-	}
-}
-
-func (heap *Heap) fixDown() {
-	parent := heap.data[0]
-	child := heap.getMaxChild()
-
-	if child != nil {
-		heap.swap()
-	}
-	// child := math.Max(heap.data[i*2+1].priority, heap.data[i*2+2].priority) использовать compare для сравнения
-
-	if heap.compare(child, parent) {
-
+	if child != nil && heap.compare(child, parent) {
+		heap.swap(parent.index, child.index)
+		heap.fixDown(parent.index)
 	}
 }
