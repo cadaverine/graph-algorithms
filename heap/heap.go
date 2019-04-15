@@ -49,7 +49,10 @@ func (heap *Heap) Enqueue(object interface{}, priority int) {
 
 // Dequeue - удалить из очереди
 func (heap *Heap) Dequeue() (interface{}, int) {
-	heap.swap(0, heap.Size()-1)
+	firstItem := heap.data[0]
+	lastItem := heap.data[heap.Size()-1]
+
+	heap.swap(firstItem, lastItem)
 	item := heap.pop()
 
 	if heap.Size() != 0 {
@@ -79,9 +82,11 @@ func (heap *Heap) pop() *Item {
 	return item
 }
 
-func (heap *Heap) swap(i, j int) {
+func (heap *Heap) swap(first, second *Item) {
+	i, j := first.index, second.index
+	first.index, second.index = j, i
+
 	heap.data[i], heap.data[j] = heap.data[j], heap.data[i]
-	heap.data[i].index, heap.data[j].index = heap.data[j].index, heap.data[i].index
 }
 
 func (heap *Heap) compare(first, second *Item) bool {
@@ -92,9 +97,9 @@ func (heap *Heap) compare(first, second *Item) bool {
 	return first.priority < second.priority
 }
 
-func (heap *Heap) getActualChild(i int) *Item {
-	leftChildIndex := i*2 + 1
-	rightChildIndex := i*2 + 2
+func (heap *Heap) getActualChild(index int) *Item {
+	leftChildIndex := index*2 + 1
+	rightChildIndex := index*2 + 2
 
 	if heap.Size() > rightChildIndex {
 		leftChild := heap.data[leftChildIndex]
@@ -111,13 +116,13 @@ func (heap *Heap) getActualChild(i int) *Item {
 	}
 }
 
-func (heap *Heap) fixUp(i int) {
-	child := heap.data[i]
-	parent := heap.data[i/2]
+func (heap *Heap) fixUp(index int) {
+	child := heap.data[index]
+	parent := heap.data[index/2]
 
 	if heap.compare(child, parent) {
-		heap.swap(i, i/2)
-		heap.fixUp(i / 2)
+		heap.swap(parent, child)
+		heap.fixUp(index / 2)
 	}
 }
 
@@ -126,7 +131,7 @@ func (heap *Heap) fixDown(index int) {
 	child := heap.getActualChild(index)
 
 	if child != nil && heap.compare(child, parent) {
-		heap.swap(parent.index, child.index)
+		heap.swap(parent, child)
 		heap.fixDown(parent.index)
 	}
 }
