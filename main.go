@@ -35,12 +35,14 @@ func main() {
 
 	vertexBFS := gr.BFS(57, gr.GetVertexByID(2))
 	vertexDFS := gr.DFS(57, gr.GetVertexByID(2))
+	distance := gr.Dijkstra(gr.GetVertexByID(4), gr.GetVertexByID(3))
 
 	resultBFS := fmt.Sprint(vertexBFS) + ", data: " + fmt.Sprint(vertexBFS.GetData()) + ")"
 	resultDFS := fmt.Sprint(vertexDFS) + ", data: " + fmt.Sprint(vertexDFS.GetData()) + ")"
 
 	fmt.Println("BFS result: ", resultBFS)
 	fmt.Println("DFS result: ", resultDFS)
+	fmt.Println("distance: ", distance)
 
 	fmt.Println()
 

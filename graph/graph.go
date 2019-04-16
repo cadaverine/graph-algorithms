@@ -2,7 +2,9 @@ package graph
 
 import (
 	"fmt"
+	"math"
 
+	"../heap"
 	"../list"
 	"../queue"
 	"../stack"
@@ -130,4 +132,43 @@ func (graph *Graph) DFS(data interface{}, from *Vertex) *Vertex {
 	}
 
 	return nil
+}
+
+// Dijkstra - алгоритм Дейкстры поиска кратчайшего пути в графе
+func (graph *Graph) Dijkstra(from *Vertex, to *Vertex) int {
+	const infinity int = math.MaxInt32
+
+	// мапа расстояний от from до всех вершин
+	distances := make(map[*Vertex]int, len(graph.verteces))
+
+	for _, vertex := range graph.verteces {
+		distances[vertex] = infinity
+	}
+	distances[from] = 0
+
+	// очередь с приоритетом (в качестве приоритета - расстояние до вершины)
+	priorityQueue := heap.Init(heap.Minimum)
+	priorityQueue.Enqueue(from, 0)
+
+	for priorityQueue.Size() != 0 {
+		element, _ := priorityQueue.Dequeue()
+		vertex := element.(*Vertex)
+
+		edgesList := graph.adjacencyMap[vertex]
+		edgesListItem := edgesList.Head
+
+		for edgesListItem != nil {
+			edge := edgesListItem.Data.(*Edge)
+			currentDistance := distances[edge.from] + edge.weight
+
+			if distances[edge.to] > currentDistance {
+				distances[edge.to] = currentDistance
+			}
+
+			edgesListItem = edgesListItem.Next
+		}
+
+	}
+
+	return distances[to]
 }
