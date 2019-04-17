@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"./graph"
-	"./heap"
 )
 
 func main() {
@@ -33,31 +32,7 @@ func main() {
 
 	fmt.Println(gr)
 
-	vertexBFS := gr.BFS(57, gr.GetVertexByID(2))
-	vertexDFS := gr.DFS(57, gr.GetVertexByID(2))
-	distance := gr.Dijkstra(gr.GetVertexByID(4), gr.GetVertexByID(3))
-
-	resultBFS := fmt.Sprint(vertexBFS) + ", data: " + fmt.Sprint(vertexBFS.GetData()) + ")"
-	resultDFS := fmt.Sprint(vertexDFS) + ", data: " + fmt.Sprint(vertexDFS.GetData()) + ")"
-
-	fmt.Println("BFS result: ", resultBFS)
-	fmt.Println("DFS result: ", resultDFS)
-	fmt.Println("distance: ", distance)
-
-	fmt.Println()
-
-	hp := heap.Init(heap.Maximum)
-
-	hp.Enqueue(0, 5)
-	hp.Enqueue(0, 6)
-	hp.Enqueue(0, 2)
-	hp.Enqueue(0, 3)
-	hp.Enqueue(0, 0)
-
-	fmt.Println(hp)
-	fmt.Println(hp.Dequeue())
-	fmt.Println(hp.Dequeue())
-	fmt.Println(hp.Dequeue())
-	fmt.Println(hp.Dequeue())
-	fmt.Println(hp.Dequeue())
+	fmt.Println("distance between 4 and 3: ", gr.Dijkstra(gr.GetVertexByID(4), gr.GetVertexByID(3)))
+	fmt.Println("distance between 1 and 3: ", gr.Dijkstra(gr.GetVertexByID(1), gr.GetVertexByID(3)))
+	fmt.Println("distance between 3 and 2: ", gr.Dijkstra(gr.GetVertexByID(3), gr.GetVertexByID(2)))
 }
