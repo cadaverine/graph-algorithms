@@ -138,15 +138,14 @@ func (graph *Graph) DFS(data interface{}, from *Vertex) *Vertex {
 func (graph *Graph) Dijkstra(from *Vertex, to *Vertex) int {
 	const infinity int = math.MaxInt32
 
-	// мапа расстояний от from до всех вершин
 	distances := make(map[*Vertex]int, len(graph.verteces))
+	paths := make(map[*Vertex]*list.List, len(graph.verteces))
 
 	for _, vertex := range graph.verteces {
 		distances[vertex] = infinity
 	}
 	distances[from] = 0
 
-	// очередь с приоритетом (в качестве приоритета - расстояние до вершины)
 	priorityQueue := heap.Init(heap.Minimum)
 	priorityQueue.Enqueue(from, 0)
 
@@ -160,14 +159,22 @@ func (graph *Graph) Dijkstra(from *Vertex, to *Vertex) int {
 		for edgesListItem != nil {
 			edge := edgesListItem.Data.(*Edge)
 			currentDistance := distances[edge.from] + edge.weight
+			paths[edge.to] = &list.List{}
 
 			if distances[edge.to] > currentDistance {
 				distances[edge.to] = currentDistance
+				priorityQueue.Enqueue(edge.to, currentDistance)
+				paths[edge.to].AddData(edge)
 			}
 
 			edgesListItem = edgesListItem.Next
 		}
 
+	}
+
+	fmt.Println()
+	for vertex, path := range paths {
+		fmt.Println(vertex, ": ", path)
 	}
 
 	return distances[to]
