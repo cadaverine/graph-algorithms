@@ -178,7 +178,6 @@ func (graph *Graph) Dijkstra(from *Vertex, to *Vertex) int {
 	const infinity int = math.MaxInt32
 
 	distances := make(map[*Vertex]int, len(graph.verteces))
-	paths := make(map[*Vertex]*list.List, len(graph.verteces))
 
 	for _, vertex := range graph.verteces {
 		distances[vertex] = infinity
@@ -198,22 +197,15 @@ func (graph *Graph) Dijkstra(from *Vertex, to *Vertex) int {
 		for edgesListItem != nil {
 			edge := edgesListItem.Data.(*Edge)
 			currentDistance := distances[edge.from] + edge.weight
-			paths[edge.to] = &list.List{}
 
 			if distances[edge.to] > currentDistance {
 				distances[edge.to] = currentDistance
 				priorityQueue.Enqueue(edge.to, currentDistance)
-				paths[edge.to].AddData(edge)
 			}
 
 			edgesListItem = edgesListItem.Next
 		}
 
-	}
-
-	fmt.Println()
-	for vertex, path := range paths {
-		fmt.Println(vertex, ": ", path)
 	}
 
 	return distances[to]
