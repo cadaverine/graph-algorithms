@@ -3,6 +3,8 @@ package graph
 import (
 	"fmt"
 	"math"
+	"strconv"
+	"strings"
 
 	"../heap"
 	"../list"
@@ -22,6 +24,43 @@ func InitializeGraph() *Graph {
 		adjacencyMap: make(map[*Vertex]*list.List, 0),
 		verteces:     make(map[int]*Vertex, 0),
 	}
+}
+
+// CreateFromString - создание графа из строки типа:
+// {(0,5), (1,3), (2,54), (3,8), (4,1)}, {(0,2,2), (1,2,3), (3,2,6)}
+func CreateFromString(str string) *Graph {
+	graph := InitializeGraph()
+
+	convertedStr := strings.Replace(str, " ", "", -1)
+	convertedStr = strings.Replace(convertedStr, "	", "", -1)
+	convertedStr = strings.Replace(convertedStr, "\n", "", -1)
+	convertedStr = strings.Trim(convertedStr, "{}")
+
+	parts := strings.Split(convertedStr, "},{")
+
+	verteces := strings.Split(strings.Trim(parts[0], "()"), "),(")
+	edges := strings.Split(strings.Trim(parts[1], "()"), "),(")
+
+	for _, vertex := range verteces {
+		temp := strings.Split(vertex, ",")
+
+		id, _ := strconv.Atoi(temp[0])
+		data, _ := strconv.Atoi(temp[1])
+
+		graph.AddVertex(id, data)
+	}
+
+	for _, edge := range edges {
+		temp := strings.Split(edge, ",")
+
+		from, _ := strconv.Atoi(temp[0])
+		to, _ := strconv.Atoi(temp[1])
+		weight, _ := strconv.Atoi(temp[2])
+
+		graph.AddEdgeByIDs(from, to, weight)
+	}
+
+	return graph
 }
 
 // AddVertex - создать вершину из данных и добавить в граф
